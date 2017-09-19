@@ -230,22 +230,41 @@ void GeometryEngine::initPlane16Geometry() {
     // duplicate vertex for each face because texture coordinate
     // is different.
 
-    const int nb_faces = 16*16;
+    const int faces = 16;
+    const int nb_faces = faces*faces;
     VertexData vertices[nb_faces * 4];
 
     float x = 0, y = 0;
+    float max_h = 1;
     int vert = 0, iterator = 0;
     while(iterator < nb_faces) {
-        float z = rand() % 3;
-
-        vertices[vert + 0] = {QVector3D(x    ,y    ,z), QVector2D(0.0f, 0.0f)};
-        vertices[vert + 1] = {QVector3D(x + 1,y    ,z), QVector2D(0.33f, 0.0f)};
-        vertices[vert + 2] = {QVector3D(x    ,y + 1,z), QVector2D(0.0f, 0.5f)};
-        vertices[vert + 3] = {QVector3D(x + 1,y + 1,z), QVector2D(0.33f, 0.5f)};
+    float z = 0;
+        //Départ
+        if(x == 0 && y == 0) {
+            vertices[vert + 0] = {QVector3D(x    ,y    , generateRand(max_h)), QVector2D(0.0f, 0.0f)};
+            vertices[vert + 1] = {QVector3D(x + 1,y    , generateRand(max_h)), QVector2D(0.33f, 0.0f)};
+            vertices[vert + 2] = {QVector3D(x    ,y + 1, generateRand(max_h)), QVector2D(0.0f, 0.5f)};
+            vertices[vert + 3] = {QVector3D(x + 1,y + 1, generateRand(max_h)), QVector2D(0.33f, 0.5f)};
+        } else if ( x != 0 && y == 0 ) { //Première ligne
+            vertices[vert + 0] = {QVector3D(vertices[vert - 3].position), QVector2D(0.0f, 0.0f)};
+            vertices[vert + 1] = {QVector3D(x + 1,y    , generateRand(max_h)), QVector2D(0.33f, 0.0f)};
+            vertices[vert + 2] = {QVector3D(vertices[vert - 1].position), QVector2D(0.0f, 0.5f)};
+            vertices[vert + 3] = {QVector3D(x + 1,y + 1, generateRand(max_h)), QVector2D(0.33f, 0.5f)};
+        } else if ( x == 0 && y != 0) { //Première colonne
+            vertices[vert + 0] = {QVector3D(vertices[( (int) y - 1) * faces * 4 + 2 + 4 * (int) x].position), QVector2D(0.0f, 0.0f)};
+            vertices[vert + 1] = {QVector3D(vertices[( (int) y - 1) * faces * 4 + 3 + 4 * (int) x].position), QVector2D(0.33f, 0.0f)};
+            vertices[vert + 2] = {QVector3D(x    ,y + 1, generateRand(max_h)), QVector2D(0.0f, 0.5f)};
+            vertices[vert + 3] = {QVector3D(x + 1,y + 1, generateRand(max_h)), QVector2D(0.33f, 0.5f)};
+        } else { //Le reste
+            vertices[vert + 0] = {QVector3D(vertices[vert - 3].position), QVector2D(0.0f, 0.0f)};
+            vertices[vert + 1] = {QVector3D(vertices[( (int) y - 1) * faces * 4 + 3 + 4 * (int) x].position), QVector2D(0.33f, 0.0f)};
+            vertices[vert + 2] = {QVector3D(vertices[vert - 1].position), QVector2D(0.0f, 0.5f)};
+            vertices[vert + 3] = {QVector3D(x + 1,y + 1,generateRand(max_h)), QVector2D(0.33f, 0.5f)};
+        }
 
         x++;
 
-        if( x == sqrt(nb_faces) ) {
+        if( x == faces ) {
             x = 0; y++;
         }
 
@@ -374,4 +393,8 @@ void GeometryEngine::drawPlane16Geometry(QOpenGLShaderProgram *program)
 
     // Draw cube geometry using indices from VBO 1
     glDrawElements(GL_TRIANGLE_STRIP, 1534, GL_UNSIGNED_SHORT, 0);
+}
+
+float GeometryEngine::generateRand(float max) {
+    return static_cast <float> (rand()) / (static_cast <float> (RAND_MAX/ max));
 }

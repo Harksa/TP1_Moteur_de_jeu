@@ -155,7 +155,6 @@ void GeometryEngine::initCubeGeometry()
 }
 
 
-
 void GeometryEngine::initPlaneGeometry() {
     // For cube we would need only 8 vertices but we have to
     // duplicate vertex for each face because texture coordinate
@@ -241,25 +240,25 @@ void GeometryEngine::initPlane16Geometry() {
     float z = 0;
         //Départ
         if(x == 0 && y == 0) {
-            vertices[vert + 0] = {QVector3D(x    ,y    , generateRand(max_h)), QVector2D(0.0f, 0.0f)};
-            vertices[vert + 1] = {QVector3D(x + 1,y    , generateRand(max_h)), QVector2D(0.33f, 0.0f)};
-            vertices[vert + 2] = {QVector3D(x    ,y + 1, generateRand(max_h)), QVector2D(0.0f, 0.5f)};
-            vertices[vert + 3] = {QVector3D(x + 1,y + 1, generateRand(max_h)), QVector2D(0.33f, 0.5f)};
-        } else if ( x != 0 && y == 0 ) { //Première ligne
-            vertices[vert + 0] = {QVector3D(vertices[vert - 3].position), QVector2D(0.0f, 0.0f)};
-            vertices[vert + 1] = {QVector3D(x + 1,y    , generateRand(max_h)), QVector2D(0.33f, 0.0f)};
-            vertices[vert + 2] = {QVector3D(vertices[vert - 1].position), QVector2D(0.0f, 0.5f)};
-            vertices[vert + 3] = {QVector3D(x + 1,y + 1, generateRand(max_h)), QVector2D(0.33f, 0.5f)};
+            vertices[vert + 0] = {QVector3D(x    ,y    , generateRand(max_h)), 									QVector2D(0.0f, 0.0f)};
+            vertices[vert + 1] = {QVector3D(x + 1,y    , generateRand(max_h)), 									QVector2D(1.0f, 0.0f)};
+            vertices[vert + 2] = {QVector3D(x    ,y + 1, generateRand(max_h)), 									QVector2D(0.0f, 1.0f)};
+            vertices[vert + 3] = {QVector3D(x + 1,y + 1, generateRand(max_h)), 									QVector2D(1.0f, 1.0f)};
+        } else if ( x != 0 && y == 0 ) { //Première ligne								
+            vertices[vert + 0] = {QVector3D(vertices[vert - 3].position), 										QVector2D(0.0f, 0.0f)};
+            vertices[vert + 1] = {QVector3D(x + 1,y    , generateRand(max_h)), 									QVector2D(1.0f, 0.0f)};
+            vertices[vert + 2] = {QVector3D(vertices[vert - 1].position), 										QVector2D(0.0f, 1.0f)};
+            vertices[vert + 3] = {QVector3D(x + 1,y + 1, generateRand(max_h)),									QVector2D(1.0f, 1.0f)};
         } else if ( x == 0 && y != 0) { //Première colonne
-            vertices[vert + 0] = {QVector3D(vertices[( (int) y - 1) * faces * 4 + 2 + 4 * (int) x].position), QVector2D(0.0f, 0.0f)};
-            vertices[vert + 1] = {QVector3D(vertices[( (int) y - 1) * faces * 4 + 3 + 4 * (int) x].position), QVector2D(0.33f, 0.0f)};
-            vertices[vert + 2] = {QVector3D(x    ,y + 1, generateRand(max_h)), QVector2D(0.0f, 0.5f)};
-            vertices[vert + 3] = {QVector3D(x + 1,y + 1, generateRand(max_h)), QVector2D(0.33f, 0.5f)};
+            vertices[vert + 0] = {QVector3D(vertices[( (int) y - 1) * faces * 4 + 2 + 4 * (int) x].position), 	QVector2D(0.0f, 0.0f)};
+            vertices[vert + 1] = {QVector3D(vertices[( (int) y - 1) * faces * 4 + 3 + 4 * (int) x].position), 	QVector2D(1.0f, 0.0f)};
+            vertices[vert + 2] = {QVector3D(x    ,y + 1, generateRand(max_h)), 									QVector2D(0.0f, 1.0f)};
+            vertices[vert + 3] = {QVector3D(x + 1,y + 1, generateRand(max_h)), 									QVector2D(1.0f, 1.0f)};
         } else { //Le reste
-            vertices[vert + 0] = {QVector3D(vertices[vert - 3].position), QVector2D(0.0f, 0.0f)};
-            vertices[vert + 1] = {QVector3D(vertices[( (int) y - 1) * faces * 4 + 3 + 4 * (int) x].position), QVector2D(0.33f, 0.0f)};
-            vertices[vert + 2] = {QVector3D(vertices[vert - 1].position), QVector2D(0.0f, 0.5f)};
-            vertices[vert + 3] = {QVector3D(x + 1,y + 1,generateRand(max_h)), QVector2D(0.33f, 0.5f)};
+            vertices[vert + 0] = {QVector3D(vertices[vert - 3].position), 										QVector2D(0.0f, 0.0f)};
+            vertices[vert + 1] = {QVector3D(vertices[( (int) y - 1) * faces * 4 + 3 + 4 * (int) x].position), 	QVector2D(1.0f, 0.0f)};
+            vertices[vert + 2] = {QVector3D(vertices[vert - 1].position), 										QVector2D(0.0f, 1.0f)};
+            vertices[vert + 3] = {QVector3D(x + 1,y + 1,generateRand(max_h)), 									QVector2D(1.0f, 1.0f)};
         }
 
         x++;

@@ -51,17 +51,17 @@
 #include "mainwidget.h"
 
 #include <QMouseEvent>
-
 #include <math.h>
 
 MainWidget::MainWidget(QWidget *parent) :
     QOpenGLWidget(parent),
     geometries(0),
     texture(0),
-    angularSpeed(0)
+    angularSpeed(0),
+    camera(QVector3D(0,0,0))
+
 {
 }
-
 MainWidget::~MainWidget()
 {
     // Make sure the context is current when deleting the texture
@@ -96,6 +96,7 @@ void MainWidget::mouseReleaseEvent(QMouseEvent *e)
 
     // Increase angular speed
     angularSpeed += acc;
+
 }
 //! [0]
 
@@ -207,7 +208,7 @@ void MainWidget::paintGL()
 //! [6]
     // Calculate model view transformation
     QMatrix4x4 matrix;
-    matrix.translate(-8.0, -8.0, -20.0);
+    matrix.translate(horizontal, vertical, zoom);
     matrix.rotate(rotation);
 
     // Set modelview-projection matrix
@@ -219,4 +220,36 @@ void MainWidget::paintGL()
 
     // Draw cube geometry
     geometries->drawPlane16Geometry(&program);
+}
+
+void MainWidget::keyPressEvent(QKeyEvent *event) {
+    if(event->isAutoRepeat()) {
+        update();
+        return;
+    }
+
+    switch(event->key()) {
+        case Qt::Key_D:
+        horizontal--;
+        break;
+    case Qt::Key_Q:
+        horizontal++;
+        break;
+    case Qt::Key_Z:
+        vertical--;
+        break;
+    case Qt::Key_S:
+        vertical++;
+        break;
+    case Qt::Key_A:
+        zoom--;
+        break;
+    case Qt::Key_E:
+        zoom++;
+        break;
+    default:
+        break;
+    }
+
+    update();
 }

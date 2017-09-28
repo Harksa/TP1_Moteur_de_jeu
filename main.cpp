@@ -65,7 +65,7 @@ int main(int argc, char *argv[])
     QSurfaceFormat::setDefaultFormat(format);
 
     app.setApplicationName("cube");
-    app.setApplicationVersion("0.1");
+    app.setApplicationVersion("0.3");
 #ifndef QT_NO_OPENGL
     MainWidget widget;
     widget.show();
